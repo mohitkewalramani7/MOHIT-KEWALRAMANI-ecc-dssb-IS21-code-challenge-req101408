@@ -15,7 +15,7 @@ export default function Home() {
         </div>
       </div>
       <div className={styles.nextbutton}>
-        View Public Service Apps
+        View ECC Apps
       </div>
     </main>
   )
