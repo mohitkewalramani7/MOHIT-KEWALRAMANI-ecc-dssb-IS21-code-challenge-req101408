@@ -17,9 +17,7 @@ export default function Home() {
         </div>
       </div>
       <Link href="/projects/projects" className={styles.buttonLink}>
-        <div className={styles.nextbutton}>
           View ECC Apps
-        </div>
       </Link>
     </main>
   )
