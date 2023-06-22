@@ -1,5 +1,12 @@
+'use client'
+import styles from './projects.module.css'
+
 export default function Projects() {
   return (
-    <p>Projects...</p>
+    <main className={styles.main}>
+      <p className={styles.heading}>
+        Projects by the ECC
+      </p>
+    </main>
   )
 }

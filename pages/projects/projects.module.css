@@ -1,0 +1,12 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    font-family: 'Lucida Grande'
+}
+
+.heading {
+    font-size: 24px;
+}
