@@ -11,11 +11,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-      <link
-        rel="icon"
-        href="/icon.jpg>"
-        type="image/jpg"
-      />
+        <link
+          rel="icon"
+          href="icon.png"
+          type="image/png"
+          sizes="any"
+        />
       </head>
       <body className={inter.className}>{children}</body>
     </html>
