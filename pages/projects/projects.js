@@ -11,17 +11,17 @@ export default function Projects() {
       let res = await fetch('http://localhost:3000')
       res = await res.json()
       console.log(res)
-      //setProjectData(res)
+      setProjectData(res)
     }
     fetchProjectData()
-  })
+  }, [])
 
   return (
     <main className={styles.main}>
       <p className={styles.heading}>
         Projects by the ECC
       </p>
-      {projectData}
+      {projectData.map((project, index) => <p key={index}>{project.productName}</p>)}
     </main>
   )
 }

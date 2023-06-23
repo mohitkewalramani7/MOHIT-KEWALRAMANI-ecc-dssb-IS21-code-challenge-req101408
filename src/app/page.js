@@ -12,7 +12,6 @@ export default function Home() {
             className={styles.bclogo}
             src="/BCID_H_rgb_pos.jpg"
             alt="BC Government Logo"
-            priority
           />
         </div>
       </div>
