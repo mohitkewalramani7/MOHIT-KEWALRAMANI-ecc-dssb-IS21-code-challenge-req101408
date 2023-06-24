@@ -1,16 +1,30 @@
 'use client'
 import { useEffect, useState } from 'react'
-import Table from 'react-bootstrap/Table';
+import { DataGrid } from '@mui/x-data-grid';
+
 import styles from './projects.module.css'
 
 export default function Projects() {
 
   const [projectData, setProjectData] = useState([])
+  
+  const columns = [
+    { field: 'productId', headerName: 'Product Id' },
+    { field: 'productName', headerName: 'Product Name', minWidth: 300, editable: true },
+    { field: 'productOwnerName', headerName: 'Product Owner Name', minWidth: 200 },
+    { field: 'scrumMasterName', headerName: 'Scrum Master Name', minWidth: 200 },
+    { field: 'Developers', headerName: 'Developers' },
+    { field: 'methodology', headerName: 'Methodology' },
+    { field: 'startDate', headerName: 'Start Date' },
+    { field: 'location', headerName: 'Link', minWidth: 400 },
+  ];
+  
 
   useEffect(() => {
     async function fetchProjectData() {
       let res = await fetch('http://localhost:3000')
       res = await res.json()
+      res.map((r, i) => r.id = i)
       console.log(res)
       setProjectData(res)
     }
@@ -22,33 +36,14 @@ export default function Projects() {
       <p className={styles.heading}>
         Projects by the ECC
       </p>
-      {/* {projectData.map((project, index) => <p key={index}>{project.productName}</p>)} */}
-      <Table striped bordered hover className={styles.tableData}>
-        <thead>
-          <tr>
-            <th>Row Number</th>
-            <th>Product Name</th>
-            <th>Product Owner</th>
-            <th>Developers</th>
-            <th>Scrum Master</th>
-            <th>Start Date</th>
-            <th>Methodology</th>
-            <th>Link</th>
-          </tr>
-        </thead>
-        <tbody>
-          {projectData.map((project, index) => <tr key={index}>
-            <td>{index + 1}</td>
-            <td>{project.productName}</td>
-            <td>{project.productOwnerName}</td>
-            <td>{project.Developers.join(', ')}</td>
-            <td>{project.scrumMasterName}</td>
-            <td>{project.startDate}</td>
-            <td>{project.methodology}</td>
-            <td><a href={project.location} target='_blank'>{project.location}</a></td>
-          </tr>)}
-        </tbody>
-      </Table>
+      <DataGrid
+        rows={projectData}
+        columns={columns}
+        initialState={{
+          pagination: {
+            paginationModel: { pageSize: 5, page: 0 },
+          },
+        }} />
     </main>
   )
 }
