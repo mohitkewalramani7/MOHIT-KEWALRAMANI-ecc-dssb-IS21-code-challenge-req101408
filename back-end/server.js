@@ -8,7 +8,11 @@ var corsOptions = {
   origin: 'http://localhost:3001'
 }
 
-app.get('/', cors(corsOptions), (req, res) => {
+app.get('/api/check', cors(corsOptions), (req, res) => {
+  res.send('Working Well!')
+})
+
+app.get('/api/products', cors(corsOptions), (req, res) => {
   res.send(mock_data)
 })
 
