@@ -15,33 +15,34 @@
     margin-bottom: 10px;
 }
 
+.formText {
+    font-size: 14px;
+    text-align: center;
+}
+
 .buttonGroup {
     width: 100%;
     display: flex;
     justify-content: space-between;
     margin-top: 40px;
+    margin-bottom: 40px;
 }
 
 .buttonLink {
     text-decoration: none;
     font-size: 14px;
     cursor: pointer;
-    padding: 4px 10px;
+    padding: 6px 20px;
     border-radius: 4px;
     color: white;
     background-color: #234075;
-}
-
-.formText {
-    font-size: 14px;
-    text-align: center;
 }
 
 .cancelButtonLink {
     text-decoration: none;
     font-size: 14px;
     cursor: pointer;
-    padding: 4px 10px;
+    padding: 6px 20px;
     border-radius: 4px;
     color: white;
     background-color: #75232e;

@@ -164,10 +164,15 @@ export default function CreateProduct(props) {
       {creating ? <CircularProgress className={styles.submittingSpinner} /> : null}
       {errorText ? <Alert severity="error">{errorText}</Alert> : null}
       <div className={styles.buttonGroup}>
-        <div className={styles.cancelButtonLink} onClick={() => { props.cancelClick() }}>Cancel</div>
-        <div className={styles.buttonLink} onClick={createProduct}>Submit</div>
+        <div
+          className={styles.cancelButtonLink}
+          onClick={() => { props.cancelClick() }}>
+            Cancel
+        </div>
+        <div className={styles.buttonLink} onClick={createProduct}>
+          Submit
+        </div>
       </div>
-      <div className={styles.spaceDiv} />
     </div>
   )
 }

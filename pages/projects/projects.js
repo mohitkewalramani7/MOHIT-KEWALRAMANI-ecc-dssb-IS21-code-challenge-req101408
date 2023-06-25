@@ -1,7 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
 import styles from './projects.module.css'
-// import Modal from 'react-modal'
 import { DataGrid } from '@mui/x-data-grid'
 
 import Alert from '@mui/material/Alert';
@@ -17,12 +16,12 @@ export default function Projects() {
   
   const columns = [
     { field: 'productId', headerName: 'Product Id' },
-    { field: 'productName', headerName: 'Product Name', minWidth: 300, editable: true },
+    { field: 'productName', headerName: 'Product Name', minWidth: 300 },
     { field: 'productOwnerName', headerName: 'Product Owner Name', minWidth: 200 },
     { field: 'scrumMasterName', headerName: 'Scrum Master Name', minWidth: 200 },
-    { field: 'Developers', headerName: 'Developers', minWidth: 400, resizeable: true },
+    { field: 'Developers', headerName: 'Developers', minWidth: 400 },
     { field: 'methodology', headerName: 'Methodology' },
-    { field: 'startDate', headerName: 'Start Date' },
+    { field: 'startDate', headerName: 'Start Date', minWidth: 200 },
     { field: 'location', headerName: 'Link', minWidth: 400 },
   ];
 
@@ -41,6 +40,7 @@ export default function Projects() {
       rawData.map(d => {
         d.id = d.productId
         d.Developers = d.Developers.join(', ')
+        d.startDate = d.startDate.split('T')[0]
       })
       return rawData
     }
