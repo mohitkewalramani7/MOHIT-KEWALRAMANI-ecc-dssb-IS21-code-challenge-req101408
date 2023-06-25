@@ -65,10 +65,13 @@ export default function CreateProduct(props) {
 
   return (
     <div className={styles.createProductForm}>
-      <p>Add a Product</p>
+      <p className={styles.formHeading}>Add a Product</p>
       <TextField required label="Product Name" variant="outlined" value={productName} onChange={(event) => setProductName(event.target.value)} />
+      <div className={styles.spaceDiv} />
       <TextField label="Product Owner Name" variant="outlined" value={productOwnerName} onChange={(event) => setProductOwnerName(event.target.value)} />
+      <div className={styles.spaceDiv} />
       <TextField label="Scrum Master Name" variant="outlined" value={scrumMasterName} onChange={(event) => sestScrumMasterName(event.target.value)} />
+      <div className={styles.spaceDiv} />
       <p>Developers</p>
       <FormControl>
         <InputLabel id="demo-simple-select-label">Methodology</InputLabel>
@@ -83,16 +86,18 @@ export default function CreateProduct(props) {
           <MenuItem value={'Waterfall'}>Waterfall</MenuItem>
         </Select>
       </FormControl>
-      <p>Start Date</p>
+      <p className={styles.formText}>Start Date</p>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker />
       </LocalizationProvider>
+      <div className={styles.spaceDiv} />
       <TextField label="Link" variant="outlined" value={link} onChange={(event) => setLink(event.target.value)} />
-      <button onClick={createProduct}>Submit</button>
+      <div className={styles.buttonGroup}>
+        <div className={styles.buttonLink} onClick={createProduct}>Submit</div>
+        <div className={styles.cancelButtonLink} onClick={() => { props.cancelClick() }}>Cancel</div>
+      </div>
       {creating ? <CircularProgress /> : null}
-      <button onClick={() => { props.cancelClick() }}>Cancel</button>
       <br />
-      {/* {success ? <Alert severity="success">Product Successfully Created</Alert> : null} */}
       {error ? <Alert severity="error">There was an error, please try again later</Alert> : null}
     </div>
   )

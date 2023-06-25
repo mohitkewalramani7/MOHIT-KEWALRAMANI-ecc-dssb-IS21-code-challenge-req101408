@@ -1,7 +1,48 @@
 .createProductForm {
     display: flex;
     flex-direction: column;
-    background-color: white;
-    align-items: center;
     padding: 0px 50px;
+    font-family: 'Lucida Grande'
+}
+
+.formHeading {
+    font-size: 24px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.spaceDiv {
+    margin-bottom: 10px;
+}
+
+.buttonGroup {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+
+.buttonLink {
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 4px;
+    color: white;
+    background-color: #234075;
+}
+
+.formText {
+    font-size: 14px;
+    text-align: center;
+}
+
+.cancelButtonLink {
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 4px;
+    color: white;
+    background-color: #75232e;
 }
