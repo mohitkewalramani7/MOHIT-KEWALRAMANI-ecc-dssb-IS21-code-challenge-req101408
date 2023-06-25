@@ -18,10 +18,30 @@ app.get('/api/products', (req, res) => {
 
 app.post('/api/createProduct', (req, res) => {
   const newData = req.body
+  if ('productName' in newData === false) {
+    res.statusCode = 406
+    res.send({'error': 'Product name is required'})
+  }
   newData.productId = 'N' + Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000
   mock_data.push(req.body)
   res.statusCode = 201
-  res.send({'response': 'Created!'})
+  res.send({'response': 'Created!', ...newData})
+})
+
+app.put('/api/updateProduct', (req, res) => {
+  const updatedData = req.body
+  if ('productId' in updatedData === false) {
+    res.statusCode = 406
+    res.send({'error': 'Product id is required'})
+  }
+  const productId = updatedData.productId
+  mock_data.map(productRecord => {
+    if (productRecord.productId === productId) {
+      res.send({'response': 'Product successfully updated'})
+    }
+  })
+  res.statusCode = 404
+  res.send({'error': `Could not find product with Id: ${productId}`})
 })
 
 app.listen(port, () => {
