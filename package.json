@@ -14,10 +14,13 @@
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.13.6",
     "@mui/x-data-grid": "^6.9.0",
+    "@mui/x-date-pickers": "^6.9.0",
     "cors": "^2.8.5",
+    "dayjs": "^1.11.8",
     "express": "^4.18.2",
     "next": "13.4.7",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-modal": "^3.16.1"
   }
 }

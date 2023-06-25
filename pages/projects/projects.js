@@ -1,12 +1,15 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { DataGrid } from '@mui/x-data-grid';
-
 import styles from './projects.module.css'
+import Modal from 'react-modal'
+import { DataGrid } from '@mui/x-data-grid'
+
+import CreateProduct from '@/components/createProduct/createProduct'
 
 export default function Projects() {
 
   const [projectData, setProjectData] = useState([])
+  const [modalOpen, setModalOpen] = useState(false)
   
   const columns = [
     { field: 'productId', headerName: 'Product Id' },
@@ -22,9 +25,9 @@ export default function Projects() {
 
   useEffect(() => {
     async function fetchProjectData() {
-      let res = await fetch('http://localhost:3000')
+      let res = await fetch('http://localhost:3000/api/products')
       res = await res.json()
-      res.map((r, i) => r.id = i)
+      res.map(r => r.id = r.productId)
       console.log(res)
       setProjectData(res)
     }
@@ -33,12 +36,24 @@ export default function Projects() {
 
   return (
     <main className={styles.main}>
+      <Modal
+        isOpen={modalOpen}
+        closeTimeoutMS={100}
+        className={styles.modal}
+        shouldCloseOnEsc={true}>
+        <CreateProduct cancelClick={() => setModalOpen(false)} />
+      </Modal>
       <p className={styles.heading}>
         Projects by the ECC
       </p>
+      <div className={styles.buttonLink} onClick={() => setModalOpen(true)}>
+          Create New Project
+      </div>
       <DataGrid
         rows={projectData}
         columns={columns}
+        onCellEditStop={() => alert('meow')}
+        disableRowSelectionOnClick={true}
         initialState={{
           pagination: {
             paginationModel: { pageSize: 5, page: 0 },

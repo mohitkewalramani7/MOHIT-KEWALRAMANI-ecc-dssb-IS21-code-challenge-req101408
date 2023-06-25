@@ -1,0 +1,7 @@
+.createProductForm {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    align-items: center;
+    padding: 0px 50px;
+}

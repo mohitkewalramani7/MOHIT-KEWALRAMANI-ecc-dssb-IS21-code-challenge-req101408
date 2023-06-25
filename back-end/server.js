@@ -8,12 +8,21 @@ var corsOptions = {
   origin: 'http://localhost:3001'
 }
 
-app.get('/api/check', cors(corsOptions), (req, res) => {
+app.use(cors())
+app.use(express.json()) // for parsing application/json
+
+app.get('/api/check', (req, res) => {
   res.send('Working Well!')
 })
 
-app.get('/api/products', cors(corsOptions), (req, res) => {
+app.get('/api/products', (req, res) => {
   res.send(mock_data)
+})
+
+app.post('/api/createProduct', (req, res) => {
+  console.log(req.body)
+  res.statusCode = 201
+  res.send({'response': 'Created!'})
 })
 
 app.listen(port, () => {
