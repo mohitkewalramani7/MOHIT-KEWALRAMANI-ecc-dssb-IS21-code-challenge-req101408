@@ -30,19 +30,26 @@ export default function CreateProduct(props) {
   const developerNames = ['Mohit Kewalramani', 'John Doe', 'Jane Doe', 'Roger Po', 'Robert Al']
 
   const [creating, setCreating] = useState(false)
-  const [error, setError] = useState(false)
+  const [formError, setFormError] = useState(false)
+  const [errorText, setErrorText] = useState('')
 
   async function createProduct() {
     setCreating(true)
+    if (productName === '') {
+      setFormError(true)
+      setErrorText('Please fill out the product name')
+      setCreating(false)
+      return
+    }
     let response = await sendCreateProductRequest()
     console.log(response)
     setCreating(false)
     if (response.responseCode === 201) {
-      setError(false)
+      setErrorText(false)
       props.successfulCreate()
     }
     else {
-      setError(true)
+      setErrorText('Servers are down, please try again later')
     }
   }
 
@@ -100,11 +107,25 @@ export default function CreateProduct(props) {
   return (
     <div className={styles.createProductForm}>
       <p className={styles.formHeading}>Add a Product</p>
-      <TextField required label="Product Name" variant="outlined" value={productName} onChange={(event) => setProductName(event.target.value)} />
+      <TextField
+        error={formError}
+        required
+        label="Product Name"
+        variant="outlined"
+        value={productName}
+        onChange={(event) => setProductName(event.target.value)} />
       <div className={styles.spaceDiv} />
-      <TextField label="Product Owner Name" variant="outlined" value={productOwnerName} onChange={(event) => setProductOwnerName(event.target.value)} />
+      <TextField
+        label="Product Owner Name"
+        variant="outlined"
+        value={productOwnerName}
+        onChange={(event) => setProductOwnerName(event.target.value)} />
       <div className={styles.spaceDiv} />
-      <TextField label="Scrum Master Name" variant="outlined" value={scrumMasterName} onChange={(event) => sestScrumMasterName(event.target.value)} />
+      <TextField
+        label="Scrum Master Name"
+        variant="outlined"
+        value={scrumMasterName}
+        onChange={(event) => sestScrumMasterName(event.target.value)} />
       <div className={styles.spaceDiv} />
       <p className={styles.formText}>Developers</p>
       <FormGroup>
@@ -139,13 +160,14 @@ export default function CreateProduct(props) {
       </LocalizationProvider>
       <div className={styles.spaceDiv} />
       <TextField label="Link" variant="outlined" value={link} onChange={(event) => setLink(event.target.value)} />
+      <div className={styles.spaceDiv} />
+      {creating ? <CircularProgress className={styles.submittingSpinner} /> : null}
+      {errorText ? <Alert severity="error">{errorText}</Alert> : null}
       <div className={styles.buttonGroup}>
         <div className={styles.cancelButtonLink} onClick={() => { props.cancelClick() }}>Cancel</div>
         <div className={styles.buttonLink} onClick={createProduct}>Submit</div>
       </div>
-      {creating ? <CircularProgress /> : null}
-      <br />
-      {error ? <Alert severity="error">There was an error, please try again later</Alert> : null}
+      <div className={styles.spaceDiv} />
     </div>
   )
 }

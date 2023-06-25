@@ -46,3 +46,8 @@
     color: white;
     background-color: #75232e;
 }
+
+.submittingSpinner {
+    margin-top: 40px;
+    align-self: center;
+}

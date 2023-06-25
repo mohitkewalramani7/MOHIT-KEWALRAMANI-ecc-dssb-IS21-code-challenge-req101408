@@ -62,7 +62,8 @@ export default function Projects() {
     <main className={styles.main}>
       {success ? <Alert severity="success">Product Successfully Created</Alert> : null}
       <Dialog
-        open={modalOpen}>
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}>
         <CreateProduct
           cancelClick={() => setModalOpen(false)}
           successfulCreate={() => successfulCreateCallback()}/>
