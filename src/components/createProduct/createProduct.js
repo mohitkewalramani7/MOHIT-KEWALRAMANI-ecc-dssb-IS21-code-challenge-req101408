@@ -69,7 +69,7 @@ export default function CreateProduct(props) {
     }
   }
 
-  function handleDeveloperSelect(newDateValue) {
+  function handleDeveloperSelect(e) {
     let developerName = e.target.value
     if (developerName) {
       const index = developersList.indexOf(developerName);
