@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react'
+import dayjs from 'dayjs'
 import styles from './createProduct.module.css'
 
-import Alert from '@mui/material/Alert';
-import CircularProgress from '@mui/material/CircularProgress';
+import Alert from '@mui/material/Alert'
+import Checkbox from '@mui/material/Checkbox'
+import CircularProgress from '@mui/material/CircularProgress'
 import FormControl from '@mui/material/FormControl'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import FormGroup from '@mui/material/FormGroup'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
@@ -18,10 +22,12 @@ export default function CreateProduct(props) {
   const [productName, setProductName] = useState('')
   const [productOwnerName, setProductOwnerName] = useState('')
   const [scrumMasterName, sestScrumMasterName] = useState('')
-  const [develoeprsList, setDevelopersList] = useState([])
+  const [developersList, setDevelopersList] = useState([])
   const [productMethodology, setProductMethodology] = useState('Agile')
-  const [startDate, setStartDate] = useState('')
+  const [startDate, setStartDate] = useState(dayjs(new Date().toISOString().split('T')[0]))
   const [link, setLink] = useState('')
+
+  const developerNames = ['Mohit Kewalramani', 'John Doe', 'Jane Doe', 'Roger Po', 'Robert Al']
 
   const [creating, setCreating] = useState(false)
   const [error, setError] = useState(false)
@@ -50,7 +56,7 @@ export default function CreateProduct(props) {
       body: JSON.stringify({
         'productName': productName,
         'productOwnerName': productOwnerName,
-        'Developers': develoeprsList,
+        'Developers': developersList,
         'scrumMasterName': scrumMasterName,
         "startDate": startDate,
         "methodology": productMethodology,
@@ -63,6 +69,34 @@ export default function CreateProduct(props) {
     }
   }
 
+  function handleDeveloperSelect(newDateValue) {
+    let developerName = e.target.value
+    if (developerName) {
+      const index = developersList.indexOf(developerName);
+      if (developersList.indexOf(developerName) > -1) {
+        developersList.splice(index)
+      }
+      else {
+        developersList.push(developerName)
+      }
+    }
+  }
+
+  function handleDateSelect(newDateValue) {
+    function addLeadingZero(val) {
+      if (val < 10) {
+        return '0' + String(val)
+      }
+      return String(val)
+    }
+
+    let year = newDateValue.$y
+    let month = newDateValue.$M + 1
+    let day = newDateValue.$D
+    const dateValue = year + '-' + addLeadingZero(month) + '-' + addLeadingZero(day)
+    setStartDate(dateValue)
+  }
+
   return (
     <div className={styles.createProductForm}>
       <p className={styles.formHeading}>Add a Product</p>
@@ -72,7 +106,17 @@ export default function CreateProduct(props) {
       <div className={styles.spaceDiv} />
       <TextField label="Scrum Master Name" variant="outlined" value={scrumMasterName} onChange={(event) => sestScrumMasterName(event.target.value)} />
       <div className={styles.spaceDiv} />
-      <p>Developers</p>
+      <p className={styles.formText}>Developers</p>
+      <FormGroup>
+        {developerNames.map(d => <FormControlLabel
+          label={d}
+          value={d}
+          onClick={handleDeveloperSelect}
+          control={<Checkbox />} />
+        )}
+      </FormGroup>
+      <div className={styles.spaceDiv} />
+      <div className={styles.spaceDiv} />
       <FormControl>
         <InputLabel id="demo-simple-select-label">Methodology</InputLabel>
         <Select
@@ -88,13 +132,16 @@ export default function CreateProduct(props) {
       </FormControl>
       <p className={styles.formText}>Start Date</p>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker />
+        <DatePicker
+          label="Start Date"
+          value={startDate}
+          onChange={(newValue) => handleDateSelect(newValue)} />
       </LocalizationProvider>
       <div className={styles.spaceDiv} />
       <TextField label="Link" variant="outlined" value={link} onChange={(event) => setLink(event.target.value)} />
       <div className={styles.buttonGroup}>
-        <div className={styles.buttonLink} onClick={createProduct}>Submit</div>
         <div className={styles.cancelButtonLink} onClick={() => { props.cancelClick() }}>Cancel</div>
+        <div className={styles.buttonLink} onClick={createProduct}>Submit</div>
       </div>
       {creating ? <CircularProgress /> : null}
       <br />

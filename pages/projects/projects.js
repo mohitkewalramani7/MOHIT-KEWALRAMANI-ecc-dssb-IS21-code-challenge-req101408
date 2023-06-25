@@ -20,7 +20,7 @@ export default function Projects() {
     { field: 'productName', headerName: 'Product Name', minWidth: 300, editable: true },
     { field: 'productOwnerName', headerName: 'Product Owner Name', minWidth: 200 },
     { field: 'scrumMasterName', headerName: 'Scrum Master Name', minWidth: 200 },
-    { field: 'Developers', headerName: 'Developers' },
+    { field: 'Developers', headerName: 'Developers', minWidth: 400, resizeable: true },
     { field: 'methodology', headerName: 'Methodology' },
     { field: 'startDate', headerName: 'Start Date' },
     { field: 'location', headerName: 'Link', minWidth: 400 },
@@ -31,16 +31,23 @@ export default function Projects() {
   }, [])
 
   useEffect(() => {
-    console.log('yes')
     if (success) {
       setTimeout(() => setSuccess(false), 3000);
     }
   }, [success])
 
   async function fetchProjectData() {
+    function preProcessProjectData(rawData) {
+      rawData.map(d => {
+        d.id = d.productId
+        d.Developers = d.Developers.join(', ')
+      })
+      return rawData
+    }
+
     let res = await fetch('http://localhost:3000/api/products')
     res = await res.json()
-    res.map(r => r.id = r.productId)
+    res = preProcessProjectData(res)
     console.log(res)
     setProjectData(res)
   }
@@ -79,7 +86,3 @@ export default function Projects() {
     </main>
   )
 }
-
-// const Transition = React.forwardRef(function Transition(props, ref) {
-//   return <Slide direction="up" ref={ref} {...props} />;
-// });
