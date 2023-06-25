@@ -11,6 +11,11 @@
     align-self: center;
 }
 
+.caption {
+    align-self: center;
+    margin-bottom: 40px;
+}
+
 .buttonLink {
     max-width: 400px;
     text-align: center;

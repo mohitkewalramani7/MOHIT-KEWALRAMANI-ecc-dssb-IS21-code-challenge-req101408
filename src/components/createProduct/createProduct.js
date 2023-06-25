@@ -11,6 +11,7 @@ import FormGroup from '@mui/material/FormGroup'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
+import Snackbar from '@mui/material/Snackbar'
 import TextField from '@mui/material/TextField'
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
@@ -84,7 +85,7 @@ export default function CreateProduct(props) {
         developersList.splice(index)
       }
       else {
-        developersList.push(developerName)
+        setDevelopersList(developersList.push(developerName))
       }
     }
   }
@@ -162,7 +163,6 @@ export default function CreateProduct(props) {
       <TextField label="Link" variant="outlined" value={link} onChange={(event) => setLink(event.target.value)} />
       <div className={styles.spaceDiv} />
       {creating ? <CircularProgress className={styles.submittingSpinner} /> : null}
-      {errorText ? <Alert severity="error">{errorText}</Alert> : null}
       <div className={styles.buttonGroup}>
         <div
           className={styles.cancelButtonLink}
@@ -173,6 +173,9 @@ export default function CreateProduct(props) {
           Submit
         </div>
       </div>
+      <Snackbar open={errorText} autoHideDuration={3000}>
+        <Alert severity="error">{errorText}</Alert>
+      </Snackbar>
     </div>
   )
 }

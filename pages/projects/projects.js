@@ -5,6 +5,7 @@ import { DataGrid } from '@mui/x-data-grid'
 
 import Alert from '@mui/material/Alert';
 import Dialog from '@mui/material/Dialog';
+import Snackbar from '@mui/material/Snackbar';
 
 import CreateProduct from '@/components/createProduct/createProduct'
 
@@ -58,9 +59,14 @@ export default function Projects() {
     fetchProjectData()
   }
 
+  async function editCallback(e) {
+    const clickedRow = e.row
+    console.log(clickedRow)
+    setModalOpen(true)
+  }
+
   return (
     <main className={styles.main}>
-      {success ? <Alert severity="success">Product Successfully Created</Alert> : null}
       <Dialog
         open={modalOpen}
         onClose={() => setModalOpen(false)}>
@@ -71,19 +77,25 @@ export default function Projects() {
       <p className={styles.heading}>
         Projects by the ECC
       </p>
+      <p className={styles.caption}>
+        Double click a row to edit the product record
+      </p>
       <div className={styles.buttonLink} onClick={() => setModalOpen(true)}>
           Create New Project
       </div>
       <DataGrid
         rows={projectData}
         columns={columns}
-        onCellEditStop={() => alert('meow')}
         disableRowSelectionOnClick={true}
+        onRowDoubleClick={editCallback}
         initialState={{
           pagination: {
             paginationModel: { pageSize: 5, page: 0 },
           },
         }} />
+      <Snackbar open={success}>
+        <Alert severity="success">Product Successfully Created</Alert>
+      </Snackbar>
     </main>
   )
 }
