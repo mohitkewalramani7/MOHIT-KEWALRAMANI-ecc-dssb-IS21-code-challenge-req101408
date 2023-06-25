@@ -4,9 +4,6 @@ const app = express()
 const port = 3000
 
 const mock_data = require('./data.json')
-var corsOptions = {
-  origin: 'http://localhost:3001'
-}
 
 app.use(cors())
 app.use(express.json()) // for parsing application/json
@@ -20,7 +17,9 @@ app.get('/api/products', (req, res) => {
 })
 
 app.post('/api/createProduct', (req, res) => {
-  console.log(req.body)
+  const newData = req.body
+  newData.productId = 'N' + Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000
+  mock_data.push(req.body)
   res.statusCode = 201
   res.send({'response': 'Created!'})
 })

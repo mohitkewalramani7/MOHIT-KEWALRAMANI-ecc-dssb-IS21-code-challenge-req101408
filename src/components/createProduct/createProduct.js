@@ -24,7 +24,6 @@ export default function CreateProduct(props) {
   const [link, setLink] = useState('')
 
   const [creating, setCreating] = useState(false)
-  const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
 
   async function createProduct() {
@@ -33,11 +32,10 @@ export default function CreateProduct(props) {
     console.log(response)
     setCreating(false)
     if (response.responseCode === 201) {
-      setSuccess(true)
       setError(false)
+      props.successfulCreate()
     }
     else {
-      setSuccess(false)
       setError(true)
     }
   }
@@ -94,7 +92,7 @@ export default function CreateProduct(props) {
       {creating ? <CircularProgress /> : null}
       <button onClick={() => { props.cancelClick() }}>Cancel</button>
       <br />
-      {success ? <Alert severity="success">Product Successfully Created</Alert> : null}
+      {/* {success ? <Alert severity="success">Product Successfully Created</Alert> : null} */}
       {error ? <Alert severity="error">There was an error, please try again later</Alert> : null}
     </div>
   )
