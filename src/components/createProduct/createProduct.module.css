@@ -15,8 +15,14 @@
     margin-bottom: 10px;
 }
 
+.developerRow {
+    display: flex;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
 .formText {
-    font-size: 14px;
+    font-size: 18px;
     text-align: center;
 }
 
@@ -36,6 +42,7 @@
     border-radius: 4px;
     color: white;
     background-color: #234075;
+    text-align: center;
 }
 
 .cancelButtonLink {

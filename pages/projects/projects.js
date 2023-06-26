@@ -22,7 +22,7 @@ export default function Projects() {
     { field: 'productName', headerName: 'Product Name', minWidth: 300 },
     { field: 'productOwnerName', headerName: 'Product Owner Name', minWidth: 200 },
     { field: 'scrumMasterName', headerName: 'Scrum Master Name', minWidth: 200 },
-    { field: 'Developers', headerName: 'Developers', minWidth: 400 },
+    { field: 'developersLabel', headerName: 'Developers', minWidth: 400 },
     { field: 'methodology', headerName: 'Methodology' },
     { field: 'startDate', headerName: 'Start Date', minWidth: 200 },
     { field: 'location', headerName: 'Link', minWidth: 400 },
@@ -42,7 +42,7 @@ export default function Projects() {
     function preProcessProjectData(rawData) {
       rawData.map(d => {
         d.id = d.productId
-        d.Developers = d.Developers.join(', ')
+        d.developersLabel = d.Developers.join(', ')
         d.startDate = d.startDate.split('T')[0]
       })
       return rawData
@@ -106,7 +106,7 @@ export default function Projects() {
           },
         }} />
       <Snackbar open={success}>
-        <Alert severity="success">Product Successfully Created</Alert>
+        <Alert severity="success">Success!</Alert>
       </Snackbar>
     </main>
   )
