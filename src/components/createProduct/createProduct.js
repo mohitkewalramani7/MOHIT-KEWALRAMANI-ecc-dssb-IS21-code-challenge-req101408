@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
+import { apiUrl } from '@/commons'
 import styles from './createProduct.module.css'
 
 import Alert from '@mui/material/Alert'
@@ -81,7 +82,7 @@ export default function CreateProduct(props) {
   async function sendUpdateProductRequest() {
     const putBody = returnAPIPayload()
     putBody.productId = productToUpdate.productId
-    const response = await fetch('http://localhost:3000/api/updateProduct', {
+    const response = await fetch(`${apiUrl}/updateProduct`, {
       method: "PUT",
       cache: "no-cache",
       headers: {
@@ -99,7 +100,7 @@ export default function CreateProduct(props) {
     return {
       'productName': productName,
       'productOwnerName': productOwnerName,
-      'Developers': developersList,
+      'Developers': developersList.filter(d => d !== ''),
       'scrumMasterName': scrumMasterName,
       "startDate": startDate,
       "methodology": productMethodology,
@@ -124,7 +125,7 @@ export default function CreateProduct(props) {
   }
 
   async function sendCreateProductRequest() {
-    const response = await fetch('http://localhost:3000/api/createProduct', {
+    const response = await fetch(`${apiUrl}/createProduct`, {
       method: "POST",
       cache: "no-cache",
       headers: {

@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import { apiUrl } from '@/commons'
 import styles from './projects.module.css'
 import { DataGrid } from '@mui/x-data-grid'
 
@@ -49,7 +50,7 @@ export default function Projects() {
     }
 
     try {
-      let res = await fetch('http://localhost:3000/api/products')
+      let res = await fetch(`${apiUrl}/products`)
       res = await res.json()
       res = preProcessProjectData(res)
       console.log(res)
