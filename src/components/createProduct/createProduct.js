@@ -155,7 +155,7 @@ export default function CreateProduct(props) {
     let month = newDateValue.$M + 1
     let day = newDateValue.$D
     const dateValue = year + '-' + addLeadingZero(month) + '-' + addLeadingZero(day)
-    setStartDate(dateValue)
+    setStartDate(dayjs(dateValue))
   }
 
   return (
