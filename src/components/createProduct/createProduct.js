@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import styles from './createProduct.module.css'
 
@@ -37,6 +37,12 @@ export default function CreateProduct(props) {
   const [formError, setFormError] = useState(false)
   const [errorText, setErrorText] = useState('')
 
+  useEffect(() => {
+    if (errorText !== '') {
+      setTimeout(() => setErrorText(''), 3000);
+    }
+  }, [errorText])
+
   async function performServerChange() {
     setProgress(true)
     if (!productName || productName === '') {
@@ -57,14 +63,18 @@ export default function CreateProduct(props) {
   }
 
   async function updateProduct() {
-    let response = await sendUpdateProductRequest()
-    console.log(response)
-    if (response.responseCode === 200) {
+    let response
+    try {
+      response = await sendUpdateProductRequest()
+    } catch (e) {
+      setErrorText('Can\'t reach the server, please try again later')
+    }
+    if (response?.responseCode === 200) {
       setErrorText(false)
       props.successfulCreate()
     }
     else {
-      setErrorText('Servers are down, please try again later')
+      setErrorText('Couldn\'t update product, please try again later')
     }
   }
 
@@ -98,13 +108,18 @@ export default function CreateProduct(props) {
   }
 
   async function createProduct() {
-    let response = await sendCreateProductRequest()
-    if (response.responseCode === 201) {
+    let response
+    try {
+      response = await sendCreateProductRequest()
+    } catch (e) {
+      setErrorText('Can\'t reach the server, please try again later')
+    }
+    if (response?.responseCode === 201) {
       setErrorText(false)
       props.successfulCreate()
     }
     else {
-      setErrorText('Servers are down, please try again later')
+      setErrorText('Couldn\'t create product, please try again later')
     }
   }
 

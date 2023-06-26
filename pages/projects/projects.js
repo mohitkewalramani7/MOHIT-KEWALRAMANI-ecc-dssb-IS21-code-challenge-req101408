@@ -48,11 +48,16 @@ export default function Projects() {
       return rawData
     }
 
-    let res = await fetch('http://localhost:3000/api/products')
-    res = await res.json()
-    res = preProcessProjectData(res)
-    console.log(res)
-    setProjectData(res)
+    try {
+      let res = await fetch('http://localhost:3000/api/products')
+      res = await res.json()
+      res = preProcessProjectData(res)
+      console.log(res)
+      setProjectData(res)
+    }
+    catch (e) {
+      console.error(e)
+    }
   }
 
   async function successfulCreateCallback() {
@@ -89,6 +94,7 @@ export default function Projects() {
       <p className={styles.heading}>
         Projects by the ECC
       </p>
+      {projectData.length > 0 ? <div className={styles.bodyContent}>
       <p className={styles.caption}>
         Double click a row to edit the product record
       </p>
@@ -105,6 +111,11 @@ export default function Projects() {
             paginationModel: { pageSize: 5, page: 0 },
           },
         }} />
+        </div> : null
+      }
+      {projectData.length === 0 ? <p className={styles.caption}>
+        Unfortunately our servers are down, please try again later
+      </p> : null}
       <Snackbar open={success}>
         <Alert severity="success">Success!</Alert>
       </Snackbar>

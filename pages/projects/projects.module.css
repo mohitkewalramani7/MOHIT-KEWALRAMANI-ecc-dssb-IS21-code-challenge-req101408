@@ -16,6 +16,11 @@
     margin-bottom: 40px;
 }
 
+.bodyContent {
+    display: flex;
+    flex-direction: column;
+}
+
 .buttonLink {
     max-width: 400px;
     text-align: center;
