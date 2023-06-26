@@ -37,6 +37,13 @@ app.put('/api/updateProduct', (req, res) => {
   const productId = updatedData.productId
   mock_data.map(productRecord => {
     if (productRecord.productId === productId) {
+      productRecord.productName = updatedData.productName
+      productRecord.productOwnerName = updatedData.productOwnerName
+      productRecord.Developers = updatedData.Developers
+      productRecord.scrumMasterName = updatedData.scrumMasterName
+      productRecord.startDate = updatedData.startDate
+      productRecord.methodology = updatedData.methodology
+      productRecord.location = updatedData.location
       res.send({'response': 'Product successfully updated'})
     }
   })

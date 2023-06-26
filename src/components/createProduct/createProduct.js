@@ -20,31 +20,84 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 
 export default function CreateProduct(props) {
 
-  const [productName, setProductName] = useState('')
-  const [productOwnerName, setProductOwnerName] = useState('')
-  const [scrumMasterName, sestScrumMasterName] = useState('')
+  const productToUpdate = props.productToUpdate
+
+  const [productName, setProductName] = useState(productToUpdate?.productName)
+  const [productOwnerName, setProductOwnerName] = useState(productToUpdate?.productOwnerName)
+  const [scrumMasterName, sestScrumMasterName] = useState(productToUpdate?.scrumMasterName)
   const [developersList, setDevelopersList] = useState([])
-  const [productMethodology, setProductMethodology] = useState('Agile')
-  const [startDate, setStartDate] = useState(dayjs(new Date().toISOString().split('T')[0]))
-  const [link, setLink] = useState('')
+  const [productMethodology, setProductMethodology] = useState((productToUpdate?.methodology) ? productToUpdate?.methodology : 'Agile')
+  const [startDate, setStartDate] = useState((productToUpdate?.startDate) ? dayjs(productToUpdate?.startDate) : dayjs(new Date().toISOString().split('T')[0]))
+  const [link, setLink] = useState(productToUpdate?.location)
 
   const developerNames = ['Mohit Kewalramani', 'John Doe', 'Jane Doe', 'Roger Po', 'Robert Al']
 
-  const [creating, setCreating] = useState(false)
+  const [progress, setProgress] = useState(false)
   const [formError, setFormError] = useState(false)
   const [errorText, setErrorText] = useState('')
 
-  async function createProduct() {
-    setCreating(true)
-    if (productName === '') {
+  async function performServerChange() {
+    setProgress(true)
+    if (!productName || productName === '') {
       setFormError(true)
       setErrorText('Please fill out the product name')
-      setCreating(false)
+      setProgress(false)
       return
     }
-    let response = await sendCreateProductRequest()
+
+    if (props.isEdit) {
+      let r = await updateProduct()
+      console.log(r)
+    }
+    else {
+      await createProduct()
+    }
+    setProgress(false)
+  }
+
+  async function updateProduct() {
+    let response = await sendUpdateProductRequest()
     console.log(response)
-    setCreating(false)
+    if (response.responseCode === 200) {
+      setErrorText(false)
+      props.successfulCreate()
+    }
+    else {
+      setErrorText('Servers are down, please try again later')
+    }
+  }
+
+  async function sendUpdateProductRequest() {
+    const putBody = returnAPIPayload()
+    putBody.productId = productToUpdate.productId
+    const response = await fetch('http://localhost:3000/api/updateProduct', {
+      method: "PUT",
+      cache: "no-cache",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(putBody),
+    });
+    return {
+      'responseCode': response.status,
+      'responseMessage': response.statusText
+    }
+  }
+
+  function returnAPIPayload() {
+    return {
+      'productName': productName,
+      'productOwnerName': productOwnerName,
+      'Developers': developersList,
+      'scrumMasterName': scrumMasterName,
+      "startDate": startDate,
+      "methodology": productMethodology,
+      "location": link
+    }
+  }
+
+  async function createProduct() {
+    let response = await sendCreateProductRequest()
     if (response.responseCode === 201) {
       setErrorText(false)
       props.successfulCreate()
@@ -61,15 +114,7 @@ export default function CreateProduct(props) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        'productName': productName,
-        'productOwnerName': productOwnerName,
-        'Developers': developersList,
-        'scrumMasterName': scrumMasterName,
-        "startDate": startDate,
-        "methodology": productMethodology,
-        "location": link
-      }),
+      body: JSON.stringify(returnAPIPayload()),
     });
     return {
       'responseCode': response.status,
@@ -107,7 +152,9 @@ export default function CreateProduct(props) {
 
   return (
     <div className={styles.createProductForm}>
-      <p className={styles.formHeading}>Add a Product</p>
+      <p className={styles.formHeading}>
+        {props.isEdit ? 'Edit Product' : 'Add a Product'}
+      </p>
       <TextField
         error={formError}
         required
@@ -129,14 +176,14 @@ export default function CreateProduct(props) {
         onChange={(event) => sestScrumMasterName(event.target.value)} />
       <div className={styles.spaceDiv} />
       <p className={styles.formText}>Developers</p>
-      <FormGroup>
+      {/* <FormGroup>
         {developerNames.map(d => <FormControlLabel
           label={d}
           value={d}
           onClick={handleDeveloperSelect}
           control={<Checkbox />} />
         )}
-      </FormGroup>
+      </FormGroup> */}
       <div className={styles.spaceDiv} />
       <div className={styles.spaceDiv} />
       <FormControl>
@@ -152,7 +199,7 @@ export default function CreateProduct(props) {
           <MenuItem value={'Waterfall'}>Waterfall</MenuItem>
         </Select>
       </FormControl>
-      <p className={styles.formText}>Start Date</p>
+      <div className={styles.spaceDiv} />
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
           label="Start Date"
@@ -162,18 +209,18 @@ export default function CreateProduct(props) {
       <div className={styles.spaceDiv} />
       <TextField label="Link" variant="outlined" value={link} onChange={(event) => setLink(event.target.value)} />
       <div className={styles.spaceDiv} />
-      {creating ? <CircularProgress className={styles.submittingSpinner} /> : null}
+      {progress ? <CircularProgress className={styles.submittingSpinner} /> : null}
       <div className={styles.buttonGroup}>
         <div
           className={styles.cancelButtonLink}
           onClick={() => { props.cancelClick() }}>
             Cancel
         </div>
-        <div className={styles.buttonLink} onClick={createProduct}>
-          Submit
+        <div className={styles.buttonLink} onClick={performServerChange}>
+          {props.isEdit ? 'Update' : 'Create'}
         </div>
       </div>
-      <Snackbar open={errorText} autoHideDuration={3000}>
+      <Snackbar open={errorText !== ''} autoHideDuration={3000}>
         <Alert severity="error">{errorText}</Alert>
       </Snackbar>
     </div>

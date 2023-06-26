@@ -13,6 +13,8 @@ export default function Projects() {
 
   const [projectData, setProjectData] = useState([])
   const [modalOpen, setModalOpen] = useState(false)
+  const [editModal, setEditModal] = useState(false)
+  const [productToUpdate, setProductToUpdate] = useState({})
   const [success, setSuccess] = useState(false)
   
   const columns = [
@@ -59,9 +61,17 @@ export default function Projects() {
     fetchProjectData()
   }
 
-  async function editCallback(e) {
+  async function openModalCreate() {
+    setEditModal(false)
+    setProductToUpdate({})
+    setModalOpen(true)
+  }
+
+  async function openModalEdit(e) {
     const clickedRow = e.row
     console.log(clickedRow)
+    setProductToUpdate(clickedRow)
+    setEditModal(true)
     setModalOpen(true)
   }
 
@@ -72,7 +82,9 @@ export default function Projects() {
         onClose={() => setModalOpen(false)}>
         <CreateProduct
           cancelClick={() => setModalOpen(false)}
-          successfulCreate={() => successfulCreateCallback()}/>
+          successfulCreate={() => successfulCreateCallback()}
+          isEdit={editModal}
+          productToUpdate={productToUpdate} />
       </Dialog>
       <p className={styles.heading}>
         Projects by the ECC
@@ -80,14 +92,14 @@ export default function Projects() {
       <p className={styles.caption}>
         Double click a row to edit the product record
       </p>
-      <div className={styles.buttonLink} onClick={() => setModalOpen(true)}>
+      <div className={styles.buttonLink} onClick={openModalCreate}>
           Create New Project
       </div>
       <DataGrid
         rows={projectData}
         columns={columns}
         disableRowSelectionOnClick={true}
-        onRowDoubleClick={editCallback}
+        onRowDoubleClick={openModalEdit}
         initialState={{
           pagination: {
             paginationModel: { pageSize: 5, page: 0 },
