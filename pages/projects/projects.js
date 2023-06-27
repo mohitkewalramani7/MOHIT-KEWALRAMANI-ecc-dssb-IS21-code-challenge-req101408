@@ -4,9 +4,9 @@ import { apiUrl } from '@/commons'
 import styles from './projects.module.css'
 import { DataGrid } from '@mui/x-data-grid'
 
-import Alert from '@mui/material/Alert';
-import Dialog from '@mui/material/Dialog';
-import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert'
+import Dialog from '@mui/material/Dialog'
+import Snackbar from '@mui/material/Snackbar'
 
 import CreateProduct from '@/components/createProduct/createProduct'
 
@@ -97,7 +97,7 @@ export default function Projects() {
       </p>
       {projectData.length > 0 ? <div className={styles.bodyContent}>
       <p className={styles.caption}>
-        Double click a row to edit the product record
+        Click a row to view or edit the product record
       </p>
       <div className={styles.buttonLink} onClick={openModalCreate}>
           Create New Project
@@ -106,7 +106,7 @@ export default function Projects() {
         rows={projectData}
         columns={columns}
         disableRowSelectionOnClick={true}
-        onRowDoubleClick={openModalEdit}
+        onRowClick={openModalEdit}
         initialState={{
           pagination: {
             paginationModel: { pageSize: 5, page: 0 },

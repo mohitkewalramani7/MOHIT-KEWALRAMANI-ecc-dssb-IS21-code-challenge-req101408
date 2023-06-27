@@ -23,7 +23,7 @@ app.post('/api/createProduct', (req, res) => {
     res.send({'error': 'Product name is required'})
     return
   }
-  newData.productId = 'N' + Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000
+  newData.productId = 'N' + String(Date.now())
   mock_data.push(req.body)
   res.statusCode = 201
   res.send({'response': 'Created!', ...newData})
