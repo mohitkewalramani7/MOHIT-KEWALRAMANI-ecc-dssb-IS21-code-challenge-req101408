@@ -54,8 +54,7 @@ export default function CreateProduct(props) {
     }
 
     if (props.isEdit) {
-      let r = await updateProduct()
-      console.log(r)
+      await updateProduct()
     }
     else {
       await createProduct()
@@ -75,7 +74,7 @@ export default function CreateProduct(props) {
       props.successfulCreate()
     }
     else {
-      setErrorText('Couldn\'t update product, please try again later')
+      setErrorText(response?.responseMessage?.error)
     }
   }
 
@@ -90,9 +89,10 @@ export default function CreateProduct(props) {
       },
       body: JSON.stringify(putBody),
     });
+    const responseBodyJson = await response.json()
     return {
       'responseCode': response.status,
-      'responseMessage': response.statusText
+      'responseMessage': responseBodyJson
     }
   }
 
@@ -120,7 +120,7 @@ export default function CreateProduct(props) {
       props.successfulCreate()
     }
     else {
-      setErrorText('Couldn\'t create product, please try again later')
+      setErrorText(response?.responseMessage?.error)
     }
   }
 
@@ -133,9 +133,10 @@ export default function CreateProduct(props) {
       },
       body: JSON.stringify(returnAPIPayload()),
     });
+    const responseBodyJson = await response.json()
     return {
       'responseCode': response.status,
-      'responseMessage': response.statusText
+      'responseMessage': responseBodyJson
     }
   }
 

@@ -21,6 +21,7 @@ app.post('/api/createProduct', (req, res) => {
   if ('productName' in newData === false) {
     res.statusCode = 406
     res.send({'error': 'Product name is required'})
+    return
   }
   newData.productId = 'N' + Math.floor(Math.random() * (99999 - 10000 + 1)) + 10000
   mock_data.push(req.body)
@@ -33,6 +34,10 @@ app.put('/api/updateProduct', (req, res) => {
   if ('productId' in updatedData === false) {
     res.statusCode = 406
     res.send({'error': 'Product id is required'})
+  }
+  if ('productName' in updatedData === false) {
+    res.statusCode = 406
+    res.send({'error': 'Product name is required'})
   }
   const productId = updatedData.productId
   mock_data.map(productRecord => {

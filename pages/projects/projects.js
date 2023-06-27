@@ -43,8 +43,8 @@ export default function Projects() {
     function preProcessProjectData(rawData) {
       rawData.map(d => {
         d.id = d.productId
-        d.developersLabel = d.Developers.join(', ')
-        d.startDate = d.startDate.split('T')[0]
+        d.developersLabel = d.Developers?.join(', ')
+        d.startDate = d.startDate?.split('T')[0]
       })
       return rawData
     }
