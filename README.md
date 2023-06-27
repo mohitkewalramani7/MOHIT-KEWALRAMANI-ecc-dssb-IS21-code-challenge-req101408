@@ -61,7 +61,8 @@ mentioned at the bottom-right corner of the table
 - :white_check_mark: The back-end computes a product number based on the unix timestamp
 when the record was created, thus there is no possibility of a conflict
 > User must answer all questions in order to save
-- TODO
+- :white_check_mark: Form on front end makes sure all fields are required with feedback for the user. Checks
+for all fields required are also done on the back end.
 > Click on save button
 - :white_check_mark: The `Create` button sends a POST request to the back-end to create
 the product record
