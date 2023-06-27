@@ -34,10 +34,12 @@ app.put('/api/updateProduct', (req, res) => {
   if ('productId' in updatedData === false) {
     res.statusCode = 406
     res.send({'error': 'Product id is required'})
+    return
   }
   if ('productName' in updatedData === false) {
     res.statusCode = 406
     res.send({'error': 'Product name is required'})
+    return
   }
   const productId = updatedData.productId
   mock_data.map(productRecord => {
@@ -50,6 +52,7 @@ app.put('/api/updateProduct', (req, res) => {
       productRecord.methodology = updatedData.methodology
       productRecord.location = updatedData.location
       res.send({'response': 'Product successfully updated'})
+      return
     }
   })
   res.statusCode = 404
