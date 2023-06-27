@@ -46,4 +46,35 @@ the landing page of the application.
 
 ## User Stories
 
-:white_check_mark:
+### User Story 1 Acceptance Criteria
+> All columns fit on the page
+- :white_check_mark: All columns do fit on the page, but with a need to scroll horizontally given the amount of information represented in the table
+> I can see a title for each column
+- :white_check_mark: Titles are visible at the top of each column
+> I can see a total number of all products at ECC
+- :white_check_mark: The total number of products across all pages (pagination) is
+mentioned at the bottom-right corner of the table
+
+### User Story 2 Acceptance Criteria
+
+> Product number generated is automatic, and doesn’t collide with previously generated product IDs
+- :white_check_mark: The back-end computes a product number based on the unix timestamp
+when the record was created, thus there is no possibility of a conflict
+> User must answer all questions in order to save
+- TODO
+> Click on save button
+- :white_check_mark: The `Create` button sends a POST request to the back-end to create
+the product record
+
+### User Story 3 Acceptance Criteria
+> Call to action button for saving exits
+- :white_check_mark: Clicking on the `Update` button when viewing a product record
+sends a PUT request to the back-end to update a product record
+> I can see my changes saved immediately
+- :white_check_mark: Once the PUT request succeeds, the form closes and the user
+gets a notification
+- :white_check_mark: The table's data refreshes and we can see the updated data
+in the table
+> Data created or edited is persistent through the event of a page refresh
+- :white_check_mark: Refreshing the page simply retrieves the data in-memory present
+on the server. As long as we don't re-start the server (which would clear its memory), all our data will be persistent.
