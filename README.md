@@ -1,34 +1,49 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# README
+
+This is Mohit Kewalramani's submission for the ecc-dssb-code-challenge-req101408
+project, for the Full Stack Developer role. The README here will walk you through
+the app's installation and setup. I've also included some outlines of the user
+stories in the requirements and how my app meets the requirements.
+
+## Tech Stack Used
+
+1. Back-End - Express JS
+1. Front-End - Next JS
+
+## Pre-Requisites
+
+The assignment outline mentions that the marking panel will have node and npm
+installed on the machine. That is sufficient to get the installation going.
+
+## Installation
+
+To install the application (both front and back ends), checkout the project, and
+run `npm install` when present in the root directory of the project
 
 ## Getting Started
 
-First, run the development server:
+Once the installation is complete, we are ready to run our application. This
+package has both a front and back ready to start. We will need two terminal tabs
+to run them, one for each.
+
+Let's start with the back-end. To run the server for the back-end, run the command
+
+```bash
+npm run server
+```
+
+The server should start at url `http:localhost:8080/api`, as specified in the documentation
+
+Next, let's start up the front-end.
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The front-end is configured to run on port `3001`, given that we have the API
+running on port `3000`. Navigating to `http://localhost:3001` should open
+the landing page of the application.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## User Stories
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+:white_check_mark:
