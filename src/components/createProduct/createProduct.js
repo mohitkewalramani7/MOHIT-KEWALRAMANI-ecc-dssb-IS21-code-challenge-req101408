@@ -1,8 +1,12 @@
+/** Component that allows a user to create or
+ * update a Product
+*/
+
+// React imports and dependent libraries
 import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
-import { apiUrl } from '@/commons'
-import styles from './createProduct.module.css'
 
+// Material UI front-end component
 import Alert from '@mui/material/Alert'
 import CircularProgress from '@mui/material/CircularProgress'
 import FormControl from '@mui/material/FormControl'
@@ -13,19 +17,29 @@ import Select from '@mui/material/Select'
 import Snackbar from '@mui/material/Snackbar'
 import TextField from '@mui/material/TextField'
 
-import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-
+// Material UI data-grid component
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 
+// Material UI Icons
+import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+
+// Internal project file imports
+import { apiUrl } from '@/commons'
+import styles from './createProduct.module.css'
+
 export default function CreateProduct(props) {
 
+  // Constant that represents the maximum number of developers
+  // we can add
   const MAX_NUMBER_OF_DEVELOPERS = 5
 
+  // Details on the product to update (if applicable)
   const productToUpdate = props.productToUpdate
 
+  // Fields of the form
   const [productName, setProductName] = useState(productToUpdate?.productName)
   const [productOwnerName, setProductOwnerName] = useState(productToUpdate?.productOwnerName)
   const [scrumMasterName, sestScrumMasterName] = useState(productToUpdate?.scrumMasterName)
@@ -34,16 +48,28 @@ export default function CreateProduct(props) {
   const [startDate, setStartDate] = useState((productToUpdate?.startDate) ? dayjs(productToUpdate?.startDate) : dayjs(new Date().toISOString().split('T')[0]))
   const [link, setLink] = useState(productToUpdate?.location)
 
+  // Whether or not to show the progress bar
   const [progress, setProgress] = useState(false)
   const [formError, setFormError] = useState(false)
+  // The error text to show feedback to the user for
   const [errorText, setErrorText] = useState('')
 
+  /**
+   * Closes the error feedback snackbar after 3 seconds
+   */
   useEffect(() => {
     if (errorText !== '') {
       setTimeout(() => setErrorText(''), 3000);
     }
   }, [errorText])
 
+  /**
+   * Method that is called when we click to either save or
+   * create a new product. It is then routed to a POST or PUT
+   * request
+   * 
+   * @return {}
+   */
   async function performServerChange() {
     setProgress(true)
     if (!productName || productName === '') {
@@ -62,6 +88,11 @@ export default function CreateProduct(props) {
     setProgress(false)
   }
 
+  /**
+   * Method used to perform a product update
+   * 
+   * @return {}
+   */
   async function updateProduct() {
     let response
     try {
@@ -78,6 +109,11 @@ export default function CreateProduct(props) {
     }
   }
 
+  /**
+   * Helper method used to perform product update
+   * 
+   * @return {object} - The contents of the API response
+   */
   async function sendUpdateProductRequest() {
     const putBody = returnAPIPayload()
     putBody.productId = productToUpdate.productId
@@ -96,6 +132,11 @@ export default function CreateProduct(props) {
     }
   }
 
+  /**
+   * Helper method to construct payload to send to the API
+   * 
+   * @return {object} - JSON formatted object of form details
+   */
   function returnAPIPayload() {
     return {
       'productName': productName,
@@ -108,6 +149,11 @@ export default function CreateProduct(props) {
     }
   }
 
+  /**
+   * Method used to perform a product create
+   * 
+   * @return {}
+   */
   async function createProduct() {
     let response
     try {
@@ -124,6 +170,11 @@ export default function CreateProduct(props) {
     }
   }
 
+  /**
+   * Helper method used to perform product create
+   * 
+   * @return {object} - The contents of the API response
+   */
   async function sendCreateProductRequest() {
     const response = await fetch(`${apiUrl}/createProduct`, {
       method: "POST",
@@ -140,12 +191,25 @@ export default function CreateProduct(props) {
     }
   }
 
+  /**
+   * Method used to update developers in the developers list
+   * when we dynamically add them onto the form
+   * 
+   * @param {integer} index - The index of the array we are modifying 
+   * @param {string} newValue - The new developer's name
+   */
   function handleDeveloperUpdate(index, newValue) {
     const newDevs = [...developersList]
     newDevs[index] = newValue
     setDevelopersList(newDevs)
   }
 
+  /**
+   * Callback method used when adding a developer to
+   * the developers list
+   * 
+   * @return {}
+   */
   function handleDeveloperAdd() {
     if (developersList.length < MAX_NUMBER_OF_DEVELOPERS) {
       const newDevs = [...developersList]
@@ -154,13 +218,42 @@ export default function CreateProduct(props) {
     }
   }
 
+  /**
+   * Callback method used when deleting a developer from
+   * the developers list
+   * 
+   * @param {integer} index - The index of the array we
+   * are deleting
+   * 
+   * @return {}
+   */
   function handleDeveloperDelete(index) {
     const newDevs = [...developersList]
     newDevs.splice(index, 1)
     setDevelopersList(newDevs)
   }
 
+  /**
+   * Callback method we use to update the new date value
+   * for the product start date
+   * 
+   * @param {object} newDateValue - Object containing details 
+   * of the date selected
+   * 
+   * @return {}
+   */
   function handleDateSelect(newDateValue) {
+    /**
+     * Helper method to add a leading 0 to our month
+     * and date fields, to format the date in YYYY-MM-DD
+     * format
+     * 
+     * @param {int} val - The integer value of the date or
+     * month field
+     * 
+     * @return {string} - A string value of the date or month with
+     * a leading 0 if necessary
+     */
     function addLeadingZero(val) {
       if (val < 10) {
         return '0' + String(val)

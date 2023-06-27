@@ -1,21 +1,45 @@
+/**
+ * API Component for our back-end
+*/
+
 const express = require('express')
 var cors = require('cors')
 const app = express()
 const port = 3000
 
+// Mock data that is formatted by using sample data
+// as well as URLs from the gov.bc Github page
 const mock_data = require('./data.json')
 
 app.use(cors())
 app.use(express.json()) // for parsing application/json
 
+/**
+ * GET request
+ * A health check for the API
+ * 
+ * @returns {200}
+ */
 app.get('/api/check', (req, res) => {
   res.send('Working Well!')
 })
 
+/**
+ * GET request
+ * Returns all products stored in memory
+ * 
+ * @returns {200}
+ */
 app.get('/api/products', (req, res) => {
   res.send(mock_data)
 })
 
+/**
+ * POST request
+ * Creates a product to be stored in memory
+ * 
+ * @returns {406, 201}
+ */
 app.post('/api/createProduct', (req, res) => {
   const newData = req.body
   if ('productName' in newData === false) {
@@ -29,6 +53,12 @@ app.post('/api/createProduct', (req, res) => {
   res.send({'response': 'Created!', ...newData})
 })
 
+/**
+ * PUT request
+ * Updates a product stored in memory
+ * 
+ * @returns {406, 404, 200}
+ */
 app.put('/api/updateProduct', (req, res) => {
   const updatedData = req.body
   if ('productId' in updatedData === false) {

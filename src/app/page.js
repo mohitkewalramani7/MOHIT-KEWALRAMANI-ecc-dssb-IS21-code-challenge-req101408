@@ -1,3 +1,5 @@
+/** Component representing the landing page of the application  */
+
 'use client'
 import styles from './page.module.css'
 import Link from 'next/link';
