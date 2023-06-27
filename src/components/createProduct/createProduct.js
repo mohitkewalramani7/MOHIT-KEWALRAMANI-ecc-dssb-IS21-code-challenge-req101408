@@ -72,9 +72,9 @@ export default function CreateProduct(props) {
    */
   async function performServerChange() {
     setProgress(true)
-    if (!productName || productName === '') {
+    if (!validateForm()) {
+      setErrorText('Please fill out all required fields')
       setFormError(true)
-      setErrorText('Please fill out the product name')
       setProgress(false)
       return
     }
@@ -86,6 +86,28 @@ export default function CreateProduct(props) {
       await createProduct()
     }
     setProgress(false)
+  }
+
+  /**
+   * Validates whether all required fields are filled in
+   * 
+   * @return {boolean}
+   */
+  function validateForm() {
+    if (!productName ||
+      productName === '' ||
+      !productOwnerName ||
+      productOwnerName === '' ||
+      !scrumMasterName ||
+      scrumMasterName === '' ||
+      developersList.length === 0 ||
+      developersList[0] === '' ||
+      !link ||
+      link === ''
+    ) {
+      return false
+    }
+    return true
   }
 
   /**
@@ -274,7 +296,7 @@ export default function CreateProduct(props) {
         {props.isEdit ? 'Edit Product' : 'Add a Product'}
       </p>
       <TextField
-        error={formError}
+        error={formError && (!productName || productName?.length === 0)}
         required
         label="Product Name"
         variant="outlined"
@@ -282,12 +304,16 @@ export default function CreateProduct(props) {
         onChange={(event) => setProductName(event.target.value)} />
       <div className={styles.spaceDiv} />
       <TextField
+        error={formError && (!productOwnerName || productOwnerName?.length === 0)}
+        required
         label="Product Owner Name"
         variant="outlined"
         value={productOwnerName}
         onChange={(event) => setProductOwnerName(event.target.value)} />
       <div className={styles.spaceDiv} />
       <TextField
+        error={formError && (!scrumMasterName || scrumMasterName?.length === 0)}
+        required
         label="Scrum Master Name"
         variant="outlined"
         value={scrumMasterName}
@@ -297,6 +323,8 @@ export default function CreateProduct(props) {
       {developersList.map((dev, index) => (
         <div key={index} className={styles.developerRow}>
           <TextField
+            error={index === 0 && formError && developersList[0]?.length === 0}
+            required={index === 0}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -337,7 +365,12 @@ export default function CreateProduct(props) {
           onChange={(newValue) => handleDateSelect(newValue)} />
       </LocalizationProvider>
       <div className={styles.spaceDiv} />
-      <TextField label="Link" variant="outlined" value={link} onChange={(event) => setLink(event.target.value)} />
+      <TextField
+        error={formError && (!link || link?.length === 0)}
+        required
+        label="Link"
+        variant="outlined"
+        value={link} onChange={(event) => setLink(event.target.value)} />
       <div className={styles.spaceDiv} />
       {progress ? <CircularProgress className={styles.submittingSpinner} /> : null}
       <div className={styles.buttonGroup}>

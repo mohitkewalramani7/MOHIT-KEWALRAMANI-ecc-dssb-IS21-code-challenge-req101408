@@ -42,16 +42,49 @@ app.get('/api/products', (req, res) => {
  */
 app.post('/api/createProduct', (req, res) => {
   const newData = req.body
-  if ('productName' in newData === false) {
+  const missingFieldsResult = areFieldsMissing(newData)
+  if (missingFieldsResult) {
     res.statusCode = 406
-    res.send({'error': 'Product name is required'})
+    res.send({ 'error': `${missingFieldsResult} field is required` })
     return
   }
   newData.productId = 'N' + String(Date.now())
   mock_data.push(req.body)
   res.statusCode = 201
-  res.send({'response': 'Created!', ...newData})
+  res.send({ 'response': 'Created!', ...newData })
 })
+
+function areFieldsMissing(inputPayload) {
+  if ('productName' in inputPayload === false ||
+    !inputPayload.productName ||
+    inputPayload.productName === '') {
+    return 'productName'
+  } else if (
+    'productOwnerName' in inputPayload === false ||
+    !inputPayload.productOwnerName ||
+    inputPayload.productOwnerName === '') return 'productOwnerName'
+  else if (
+    'scrumMasterName' in inputPayload === false ||
+    !inputPayload.scrumMasterName ||
+    inputPayload.scrumMasterName === '') return 'scrumMasterName'
+  else if (
+    'Developers' in inputPayload === false ||
+    !inputPayload.Developers ||
+    inputPayload.Developers[0] === '' ||
+    inputPayload.Developers.length === 0) return 'Developers'
+  else if (
+    'startDate' in inputPayload === false ||
+    !inputPayload.startDate ||
+    inputPayload.startDate === '') return 'startDate'
+  else if (
+    'methodology' in inputPayload === false ||
+    !inputPayload.methodology ||
+    inputPayload.methodology === '') return 'methodology'
+  else if ('location' in inputPayload === false ||
+    !inputPayload.location ||
+    inputPayload.location === '') return 'location'
+  return false
+}
 
 /**
  * PUT request
@@ -61,17 +94,19 @@ app.post('/api/createProduct', (req, res) => {
  */
 app.put('/api/updateProduct', (req, res) => {
   const updatedData = req.body
-  if ('productId' in updatedData === false) {
+  if ('productId' in updatedData === false || !updatedData.productId || updatedData.productId === '') {
     res.statusCode = 406
-    res.send({'error': 'Product id is required'})
+    res.send({ 'error': 'Product id is required' })
     return
   }
-  if ('productName' in updatedData === false) {
+  const fieldsMissingCheck = areFieldsMissing(updatedData)
+  if (fieldsMissingCheck) {
     res.statusCode = 406
-    res.send({'error': 'Product name is required'})
+    res.send({ 'error': `${fieldsMissingCheck} is required` })
     return
   }
   const productId = updatedData.productId
+  let productFound = false
   mock_data.map(productRecord => {
     if (productRecord.productId === productId) {
       productRecord.productName = updatedData.productName
@@ -81,12 +116,15 @@ app.put('/api/updateProduct', (req, res) => {
       productRecord.startDate = updatedData.startDate
       productRecord.methodology = updatedData.methodology
       productRecord.location = updatedData.location
-      res.send({'response': 'Product successfully updated'})
+      res.send({ 'response': 'Product successfully updated' })
+      productFound = true
       return
     }
   })
-  res.statusCode = 404
-  res.send({'error': `Could not find product with Id: ${productId}`})
+  if (!productFound) {
+    res.statusCode = 404
+    res.send({ 'error': `Could not find product with Id: ${productId}` })
+  }
 })
 
 app.listen(port, () => {
