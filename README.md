@@ -7,7 +7,7 @@ stories in the requirements and how my app meets the requirements.
 
 ## Tech Stack Used
 
-1. Back-End - Express JS
+1. Back-End - Express JS - Swagger Documentation: https://app.swaggerhub.com/apis-docs/MOHITKEWALRAMANI74_1/ECC_back_end_API/1.0.0#/
 1. Front-End - Next JS
 
 ## Pre-Requisites
