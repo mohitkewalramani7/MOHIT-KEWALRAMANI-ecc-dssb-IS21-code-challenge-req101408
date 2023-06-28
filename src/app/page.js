@@ -2,11 +2,16 @@
 
 'use client'
 import styles from './page.module.css'
-import Link from 'next/link';
+import Head from 'next/head'
+import Link from 'next/link'
 
 export default function Home() {  
   return (
     <main className={styles.main}>
+      <Head>
+        <title>Projects</title>
+        <link rel="icon" href="/icon.png" sizes="any" />
+      </Head>
       <div className={styles.description}>
         <p>Submission by Mohit Kewalramani</p>
         <div>

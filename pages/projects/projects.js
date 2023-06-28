@@ -5,6 +5,7 @@
 'use client'
 // React imports
 import { useEffect, useState } from 'react'
+import Head from 'next/head'
 
 // Material UI front-end components
 import Alert from '@mui/material/Alert'
@@ -138,6 +139,10 @@ export default function Projects() {
 
   return (
     <main className={styles.main}>
+      <Head>
+        <title>Projects</title>
+        <link rel="icon" href="/icon.png" sizes="any" />
+      </Head>
       <Dialog
         open={modalOpen}
         onClose={() => setModalOpen(false)}>
