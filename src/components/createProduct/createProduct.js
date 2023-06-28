@@ -137,15 +137,14 @@ export default function CreateProduct(props) {
    * @return {object} - The contents of the API response
    */
   async function sendUpdateProductRequest() {
-    const putBody = returnAPIPayload()
-    putBody.productId = productToUpdate.productId
-    const response = await fetch(`${apiUrl}/updateProduct`, {
+    const params = new URLSearchParams({productId: productToUpdate.productId})
+    const response = await fetch(`${apiUrl}/updateProduct?${params}`, {
       method: "PUT",
       cache: "no-cache",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(putBody),
+      body: JSON.stringify(returnAPIPayload()),
     });
     const responseBodyJson = await response.json()
     return {

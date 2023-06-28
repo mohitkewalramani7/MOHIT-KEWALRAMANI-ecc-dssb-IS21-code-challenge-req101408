@@ -101,22 +101,22 @@ function areFieldsMissing(inputPayload) {
  * @returns {406, 404, 200}
  */
 app.put('/api/updateProduct', (req, res) => {
-  const updatedData = req.body
-  if ('productId' in updatedData === false || !updatedData.productId || updatedData.productId === '') {
+  const productIdQueryParam = req.query?.productId
+  if (!productIdQueryParam || productIdQueryParam === '') {
     res.statusCode = 406
-    res.send({ 'error': 'Product id is required' })
+    res.send({ 'error': 'Product Id param is required' })
     return
   }
+  const updatedData = req.body
   const fieldsMissingCheck = areFieldsMissing(updatedData)
   if (fieldsMissingCheck) {
     res.statusCode = 406
     res.send({ 'error': `${fieldsMissingCheck} is required` })
     return
   }
-  const productId = updatedData.productId
   let productFound = false
   mock_data.map(productRecord => {
-    if (productRecord.productId === productId) {
+    if (productRecord.productId === productIdQueryParam) {
       productRecord.productName = updatedData.productName
       productRecord.productOwnerName = updatedData.productOwnerName
       productRecord.Developers = updatedData.Developers
@@ -131,7 +131,7 @@ app.put('/api/updateProduct', (req, res) => {
   })
   if (!productFound) {
     res.statusCode = 404
-    res.send({ 'error': `Could not find product with Id: ${productId}` })
+    res.send({ 'error': `Could not find product with Id: ${productIdQueryParam}` })
   }
 })
 
