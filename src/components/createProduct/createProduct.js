@@ -221,6 +221,11 @@ export default function CreateProduct(props) {
     }
   }
 
+  /**
+   * Callback method used to perform delete
+   * 
+   * @return {}
+   */
   async function deleteProduct() {
     const params = new URLSearchParams({productId: productToUpdate.productId})
     try {
