@@ -8,6 +8,12 @@ import dayjs from 'dayjs'
 
 // Material UI front-end component
 import Alert from '@mui/material/Alert'
+import Button from '@mui/material/Button'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
 import CircularProgress from '@mui/material/CircularProgress'
 import FormControl from '@mui/material/FormControl'
 import InputAdornment from '@mui/material/InputAdornment';
@@ -50,7 +56,10 @@ export default function CreateProduct(props) {
 
   // Whether or not to show the progress bar
   const [progress, setProgress] = useState(false)
+  // Whether or not to highlight required fields
   const [formError, setFormError] = useState(false)
+  // Product delete confirmation dialog
+  const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false)
   // The error text to show feedback to the user for
   const [errorText, setErrorText] = useState('')
 
@@ -210,6 +219,30 @@ export default function CreateProduct(props) {
       'responseCode': response.status,
       'responseMessage': responseBodyJson
     }
+  }
+
+  async function deleteProduct() {
+    const params = new URLSearchParams({productId: productToUpdate.productId})
+    try {
+      const response = await fetch(`${apiUrl}/deleteProduct?${params}`, {
+        method: "DELETE",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      });
+      const responseBodyJson = await response.json()
+      if (response.status === 200) {
+        props.successfulCreate()
+      }
+      else {
+        setErrorText(responseBodyJson?.error)
+      }
+    }
+    catch (e) {
+      setErrorText('Can\'t reach the server, please try again later')
+    }
+    setDeleteConfirmationOpen(false)
   }
 
   /**
@@ -372,6 +405,9 @@ export default function CreateProduct(props) {
         value={link} onChange={(event) => setLink(event.target.value)} />
       <div className={styles.spaceDiv} />
       {progress ? <CircularProgress className={styles.submittingSpinner} /> : null}
+      {props.isEdit ? <div className={styles.cancelButtonLink} onClick={() => setDeleteConfirmationOpen(true)}>
+        Delete Product
+      </div> : null}
       <div className={styles.buttonGroup}>
         <div
           className={styles.cancelButtonLink}
@@ -385,6 +421,21 @@ export default function CreateProduct(props) {
       <Snackbar open={errorText !== ''} autoHideDuration={3000}>
         <Alert severity="error">{errorText}</Alert>
       </Snackbar>
+      <Dialog
+        open={deleteConfirmationOpen}
+        onClose={() => setDeleteConfirmationOpen(false)}
+        >
+        <DialogTitle>Are you sure you want to delete this Product?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Once you delete a product, this can't be undone
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button autoFocus onClick={() => setDeleteConfirmationOpen(false)}>No</Button>
+          <Button autoFocus onClick={deleteProduct}>Yes</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   )
 }

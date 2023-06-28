@@ -102,7 +102,7 @@ function areFieldsMissing(inputPayload) {
  */
 app.put('/api/updateProduct', (req, res) => {
   const productIdQueryParam = req.query?.productId
-  if (!productIdQueryParam || productIdQueryParam === '') {
+  if (!checkForProductId(productIdQueryParam)) {
     res.statusCode = 406
     res.send({ 'error': 'Product Id param is required' })
     return
@@ -134,6 +134,48 @@ app.put('/api/updateProduct', (req, res) => {
     res.send({ 'error': `Could not find product with Id: ${productIdQueryParam}` })
   }
 })
+
+/**
+ * Helper method to check for present Product Id
+ * 
+ * @param {string} productIdQueryParam 
+ * @return {boolean}
+ */
+function checkForProductId(productIdQueryParam) {
+  if (!productIdQueryParam || productIdQueryParam === '') {
+    return false
+  }
+  return true
+}
+
+/**
+ * DELETE request
+ * Deletes a Product with a given Product Id
+ * 
+ * @returns {406, 404, 200}
+ */
+app.delete('/api/deleteProduct', (req, res) => {
+  const productIdQueryParam = req.query?.productId
+  if (!checkForProductId(productIdQueryParam)) {
+    res.statusCode = 406
+    res.send({ 'error': 'Product Id param is required' })
+    return
+  }
+  let productFound = false
+  mock_data.map((productRecord, index) => {
+    if (productRecord.productId === productIdQueryParam) {
+      mock_data.splice(index, 1)
+      res.send({ 'response': 'Product successfully deleted' })
+      productFound = true
+      return
+    }
+  })
+  if (!productFound) {
+    res.statusCode = 404
+    res.send({ 'error': `Could not find product with Id: ${productIdQueryParam}` })
+  }
+})
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
