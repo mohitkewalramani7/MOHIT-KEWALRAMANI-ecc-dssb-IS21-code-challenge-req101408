@@ -54,6 +54,14 @@ app.post('/api/createProduct', (req, res) => {
   res.send({ 'response': 'Created!', ...newData })
 })
 
+/**
+ * Helper method to see if payload consists of any
+ * missing fields
+ * 
+ * @param {object} - payload body we want to check fields for
+ * @returns {String or boolean} - Missing field name or false if 
+ * no missing fields
+ */
 function areFieldsMissing(inputPayload) {
   if ('productName' in inputPayload === false ||
     !inputPayload.productName ||
